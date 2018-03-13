@@ -15,7 +15,7 @@ public class EmployeeDatabase {
     /**
      * List of employees.
      */
-    public List<Employee> employees;
+    private List<Employee> employees;
 
     /**
      * Constructor which initializes the employees list.
@@ -24,16 +24,17 @@ public class EmployeeDatabase {
      * data structures in Java.
      */
     public EmployeeDatabase() {
+
         employees = new ArrayList<Employee>();
     }
 
     /**
      * Returns the manager for the given employee.
      *
-     * @param employee
+     * @param employee = stuff.
      * @return
      */
-    Employee findManager(final Employee employee) {
+    public Employee findManager(final Employee employee) {
         Employee manager = null;
         for (int i = 0; i < employees.size(); i++) {
             if (employees.get(i).getName() == employee.getManager()) {
@@ -53,9 +54,17 @@ public class EmployeeDatabase {
      * @return int
      */
     public int countManagersAbove(final Employee employee) {
-        /*
-         * Implement this function
-         */
+        Employee minion = employee;
+        int count = 0;
+        while (minion.getManager() != null && minion.getManager() != "") {
+            count++;
+            for (Employee imp : employees){
+                if (imp.getName() == minion.getManager()){
+                    minion = imp;
+                }
+            }
+        }
+        return count;
     }
 
     /**
@@ -67,9 +76,14 @@ public class EmployeeDatabase {
      * @return int
      */
     public int countEmployeesUnder(final Employee employee) {
-        /*
-         * Implement this function
-         */
+        Employee headhoncho = employee;
+        int count = 0;
+        for (Employee minion : employees){
+            if (minion.getManager() == headhoncho.getName()){
+                count += 1 + countEmployeesUnder(minion);
+            }
+        }
+        return count;
     }
 
     /**
